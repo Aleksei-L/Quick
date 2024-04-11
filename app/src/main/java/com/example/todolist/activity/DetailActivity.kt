@@ -11,10 +11,9 @@ class DetailActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_item)
 
-		val intent = intent
-		val title = intent.getStringExtra("title")
-		val desc = intent.getStringExtra("description")
-		val priority = intent.getStringExtra("priority")
+		val title = intent.getStringExtra(MainActivity.TITLE_EXTRA)
+		val desc = intent.getStringExtra(MainActivity.DESC_EXTRA)
+		val priority = intent.getStringExtra(MainActivity.PRIORITY_EXTRA)
 
 		val titleView = findViewById<TextView>(R.id.info_title)
 		val descView = findViewById<TextView>(R.id.info_description)
