@@ -1,0 +1,10 @@
+<resources>
+	<string name="app_name">Quick</string>
+	<string name="main_title">Quick Main Screen</string>
+	<string name="priority_hint">Приоритет задачи:</string>
+	<string-array name="priority_array">
+		<item>Низкий</item>
+		<item>Обычный</item>
+		<item>Высокий</item>
+	</string-array>
+</resources>
