@@ -7,4 +7,5 @@
 		<item>Обычный</item>
 		<item>Высокий</item>
 	</string-array>
+	<string name="create_quick_button">Создать заметку</string>
 </resources>

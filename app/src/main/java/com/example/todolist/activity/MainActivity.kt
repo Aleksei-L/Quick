@@ -2,7 +2,10 @@ package com.example.todolist.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -21,6 +24,12 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
+		val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
+		setSupportActionBar(toolbar)
+	}
+
+	override fun onStart() {
+		super.onStart()
 		val db = Room.databaseBuilder(
 			this,
 			QuickDatabase::class.java,
@@ -31,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 			val quick = db.quickDao()
 			data = quick.getAllQuick()
 		}
+
 
 		val action = object : QuickItemAdapter.OnItemClickListener {
 			override fun onItemClick(item: Quick, position: Int) {
@@ -46,6 +56,22 @@ class MainActivity : AppCompatActivity() {
 		while (!job.isCompleted) {
 		}
 		recyclerView.adapter = QuickItemAdapter(data, action)
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+		menuInflater.inflate(R.menu.main_menu, menu)
+		return super.onCreateOptionsMenu(menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		return when (item.itemId) {
+			R.id.create_quick -> {
+				startActivity(Intent(this, CreateQuickActivity::class.java))
+				true
+			}
+
+			else -> super.onOptionsItemSelected(item)
+		}
 	}
 
 	companion object {
