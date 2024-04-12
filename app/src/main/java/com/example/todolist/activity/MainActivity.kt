@@ -24,12 +24,13 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
-		val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
+		val toolbar = findViewById<Toolbar>(R.id.toolbar)
 		setSupportActionBar(toolbar)
 	}
 
 	override fun onStart() {
 		super.onStart()
+		//TODO вынести базу данных в сингтон
 		val db = Room.databaseBuilder(
 			this,
 			QuickDatabase::class.java,
@@ -41,10 +42,10 @@ class MainActivity : AppCompatActivity() {
 			data = quick.getAllQuick()
 		}
 
-
 		val action = object : QuickItemAdapter.OnItemClickListener {
 			override fun onItemClick(item: Quick, position: Int) {
 				val intent = Intent(this@MainActivity, DetailActivity::class.java)
+				intent.putExtra(ID_EXTRA, item.id)
 				intent.putExtra(TITLE_EXTRA, item.title)
 				intent.putExtra(DESC_EXTRA, item.description)
 				intent.putExtra(PRIORITY_EXTRA, item.priority.name)
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-		menuInflater.inflate(R.menu.main_menu, menu)
+		menuInflater.inflate(R.menu.menu_main, menu)
 		return super.onCreateOptionsMenu(menu)
 	}
 
@@ -75,6 +76,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	companion object {
+		const val ID_EXTRA = "id"
 		const val TITLE_EXTRA = "title"
 		const val DESC_EXTRA = "desc"
 		const val PRIORITY_EXTRA = "priority"

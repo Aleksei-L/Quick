@@ -2,10 +2,10 @@
 	<string name="app_name">Quick</string>
 	<string name="main_title">Quick Main Screen</string>
 	<string name="priority_hint">Приоритет задачи:</string>
-	<string-array name="priority_array">
-		<item>Низкий</item>
-		<item>Обычный</item>
-		<item>Высокий</item>
-	</string-array>
+	<string name="priority_low">Низкий</string>
+	<string name="priority_medium">Обычный</string>
+	<string name="priority_high">Высокий</string>
 	<string name="create_quick_button">Создать заметку</string>
+	<string name="edit_quick_button">Изменить заметку</string>
+	<string name="delete_quick_button">Удалить заметку</string>
 </resources>

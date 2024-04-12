@@ -12,6 +12,9 @@ interface QuickDao {
 	@Query("SELECT * FROM Quick")
 	fun getAllQuick(): List<Quick>
 
+	@Query("SELECT * FROM Quick WHERE id = :id")
+	fun getQuickById(id: Long): Quick
+
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun insertQuick(quick: Quick)
 
