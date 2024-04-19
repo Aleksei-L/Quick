@@ -1,14 +1,14 @@
 package com.example.todolist.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.room.Room
+import com.example.todolist.MyApp
 import com.example.todolist.R
-import com.example.todolist.db.QuickDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,7 +33,6 @@ class DetailActivity : AppCompatActivity() {
 		titleView.text = title
 		descView.text = desc
 		priorityView.text = "$priority"
-
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -44,21 +43,34 @@ class DetailActivity : AppCompatActivity() {
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
 			R.id.edit_quick -> {
-				//startActivity(Intent(this, CreateQuickActivity::class.java))
+				val myIntent = Intent(this, CreateQuickActivity::class.java)
+				myIntent.putExtra(EDIT_FLAG_EXTRA, "Изменить заметку")
+				myIntent.putExtra(
+					MainActivity.ID_EXTRA,
+					intent.getLongExtra(MainActivity.ID_EXTRA, 0)
+				) //TODO убрать этот 0
+				myIntent.putExtra(
+					MainActivity.TITLE_EXTRA,
+					intent.getStringExtra(MainActivity.TITLE_EXTRA)
+				)
+				myIntent.putExtra(
+					MainActivity.DESC_EXTRA,
+					intent.getStringExtra(MainActivity.DESC_EXTRA)
+				)
+				myIntent.putExtra(
+					MainActivity.PRIORITY_EXTRA,
+					intent.getStringExtra(MainActivity.PRIORITY_EXTRA)
+				)
+				startActivity(myIntent)
 				true
 			}
 
 			R.id.delete_quick -> {
-				//TODO вынести базу данных в сингтон
-				val db = Room.databaseBuilder(
-					this,
-					QuickDatabase::class.java,
-					"quick_database"
-				).build()
 				CoroutineScope(Dispatchers.IO).launch {
-					val quick = db.quickDao()
-					quick.deleteQuick(
-						quick.getQuickById(
+					val app = application as MyApp
+					val dao = app.globalDao
+					dao.deleteQuick(
+						dao.getQuickById(
 							intent.getLongExtra(
 								MainActivity.ID_EXTRA,
 								0 //TODO предусмотреть чтобы операция отменялась если getQuickById ничего не нашла
@@ -72,5 +84,9 @@ class DetailActivity : AppCompatActivity() {
 
 			else -> super.onOptionsItemSelected(item)
 		}
+	}
+
+	companion object {
+		const val EDIT_FLAG_EXTRA = "edit_flag"
 	}
 }

@@ -8,11 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
+import com.example.todolist.MyApp
 import com.example.todolist.R
 import com.example.todolist.adapter.QuickItemAdapter
 import com.example.todolist.data.Quick
-import com.example.todolist.db.QuickDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,16 +29,11 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onStart() {
 		super.onStart()
-		//TODO вынести базу данных в сингтон
-		val db = Room.databaseBuilder(
-			this,
-			QuickDatabase::class.java,
-			"quick_database"
-		).build()
 
 		val job = CoroutineScope(Dispatchers.IO).launch {
-			val quick = db.quickDao()
-			data = quick.getAllQuick()
+			val app = application as MyApp
+			val dao = app.globalDao
+			data = dao.getAllQuick()
 		}
 
 		val action = object : QuickItemAdapter.OnItemClickListener {
