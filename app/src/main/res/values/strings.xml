@@ -8,4 +8,5 @@
 	<string name="create_quick_button">Создать заметку</string>
 	<string name="edit_quick_button">Изменить заметку</string>
 	<string name="delete_quick_button">Удалить заметку</string>
+	<string name="create">Создать</string>
 </resources>

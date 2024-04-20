@@ -8,6 +8,7 @@ import com.example.todolist.data.PRIORITY
 import com.example.todolist.data.Quick
 import com.example.todolist.holder.QuickItemViewHolder
 
+
 class QuickItemAdapter(private val data: List<Quick>, private val listener: OnItemClickListener) :
 	RecyclerView.Adapter<QuickItemViewHolder>() {
 	interface OnItemClickListener {
@@ -23,13 +24,13 @@ class QuickItemAdapter(private val data: List<Quick>, private val listener: OnIt
 	override fun onBindViewHolder(holder: QuickItemViewHolder, position: Int) {
 		holder.title.text = data[position].title
 		holder.description.text = data[position].description
-		holder.priority.setImageResource(
-			when (data[position].priority) {
-				PRIORITY.LOW -> R.drawable.ic_low_priority
-				PRIORITY.MEDIUM -> R.drawable.ic_medium_priority
-				PRIORITY.HIGH -> R.drawable.ic_high_priority
-			}
-		)
+		if (data[position].priority == PRIORITY.LOW) {
+			holder.priority.setImageResource(R.drawable.ic_priority_low)
+			val color = holder.itemView.context.resources.getColor(R.color.grey, null)
+			holder.title.setTextColor(color)
+			holder.description.setTextColor(color)
+		} else if (data[position].priority == PRIORITY.HIGH)
+			holder.priority.setImageResource(R.drawable.ic_priority_high)
 		holder.itemView.setOnClickListener {
 			listener.onItemClick(data[position], position)
 		}

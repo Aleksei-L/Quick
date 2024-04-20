@@ -12,6 +12,7 @@ import com.example.todolist.MyApp
 import com.example.todolist.R
 import com.example.todolist.adapter.QuickItemAdapter
 import com.example.todolist.data.Quick
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,6 +26,11 @@ class MainActivity : AppCompatActivity() {
 
 		val toolbar = findViewById<Toolbar>(R.id.toolbar)
 		setSupportActionBar(toolbar)
+
+		val fab = findViewById<ExtendedFloatingActionButton>(R.id.fab_create)
+		fab.setOnClickListener {
+			startActivity(Intent(this, CreateQuickActivity::class.java))
+		}
 	}
 
 	override fun onStart() {
@@ -38,12 +44,12 @@ class MainActivity : AppCompatActivity() {
 
 		val action = object : QuickItemAdapter.OnItemClickListener {
 			override fun onItemClick(item: Quick, position: Int) {
-				val intent = Intent(this@MainActivity, DetailActivity::class.java)
-				intent.putExtra(ID_EXTRA, item.id)
-				intent.putExtra(TITLE_EXTRA, item.title)
-				intent.putExtra(DESC_EXTRA, item.description)
-				intent.putExtra(PRIORITY_EXTRA, item.priority.name)
-				startActivity(intent)
+				val myIntent = Intent(this@MainActivity, DetailActivity::class.java)
+				myIntent.putExtra(ID_EXTRA, item.id)
+				myIntent.putExtra(TITLE_EXTRA, item.title)
+				myIntent.putExtra(DESC_EXTRA, item.description)
+				myIntent.putExtra(PRIORITY_EXTRA, item.priority.name)
+				startActivity(myIntent)
 			}
 		}
 		val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)

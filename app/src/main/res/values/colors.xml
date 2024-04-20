@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<color name="red">#FF0000</color>
+	<color name="grey">#999999</color>
 	<color name="back_primary_light">#F7F6F2</color>
 	<color name="back_secondary_light">#FFFFFFFF</color>
 	<color name="back_elevated_light">#FFFFFFFF</color>

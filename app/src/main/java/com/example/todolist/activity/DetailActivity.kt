@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.todolist.MyApp
@@ -66,17 +67,24 @@ class DetailActivity : AppCompatActivity() {
 			}
 
 			R.id.delete_quick -> {
+				val toast = Toast.makeText(
+					this,
+					"Ошибка: не удалось удалить заметку!",
+					Toast.LENGTH_LONG
+				)
 				CoroutineScope(Dispatchers.IO).launch {
 					val app = application as MyApp
 					val dao = app.globalDao
-					dao.deleteQuick(
-						dao.getQuickById(
-							intent.getLongExtra(
-								MainActivity.ID_EXTRA,
-								0 //TODO предусмотреть чтобы операция отменялась если getQuickById ничего не нашла
-							)
+					val quickForDelete = dao.getQuickById(
+						intent.getLongExtra(
+							MainActivity.ID_EXTRA,
+							-1
 						)
 					)
+					if (quickForDelete != null)
+						dao.deleteQuick(quickForDelete)
+					else
+						toast.show()
 				}
 				onBackPressed() //TODO поменять на нормальный способ возврата к предыдущий activity
 				true
