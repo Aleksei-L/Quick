@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.R
 
 class QuickItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-	val title = itemView.findViewById<TextView>(R.id.item_title)
-	val description = itemView.findViewById<TextView>(R.id.item_description)
-	val priority = itemView.findViewById<ImageView>(R.id.priority)
+	val title: TextView = itemView.findViewById(R.id.item_title)
+	val description: TextView = itemView.findViewById(R.id.item_description)
+	val priority: ImageView = itemView.findViewById(R.id.priority)
 }

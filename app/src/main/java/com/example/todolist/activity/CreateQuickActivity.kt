@@ -22,6 +22,9 @@ class CreateQuickActivity : AppCompatActivity() {
 		val toolbar = findViewById<Toolbar>(R.id.toolbar)
 		setSupportActionBar(toolbar)
 		supportActionBar?.setDisplayHomeAsUpEnabled(true)
+		toolbar.setNavigationOnClickListener {
+			onBackPressedDispatcher.onBackPressed()
+		}
 
 		// Проверка на переход с DetailActivity
 		val editable = intent.getStringExtra(DetailActivity.EDIT_FLAG_EXTRA)
@@ -45,9 +48,8 @@ class CreateQuickActivity : AppCompatActivity() {
 							description.text.toString(),
 							when (priority.checkedButtonId) {
 								R.id.priority_low_button -> PRIORITY.LOW
-								R.id.priority_medium_button -> PRIORITY.MEDIUM
 								R.id.priority_high_button -> PRIORITY.HIGH
-								else -> PRIORITY.MEDIUM //TODO убрать это
+								else -> PRIORITY.MEDIUM
 							}
 						)
 					)
@@ -63,16 +65,15 @@ class CreateQuickActivity : AppCompatActivity() {
 							description.text.toString(),
 							when (priority.checkedButtonId) {
 								R.id.priority_low_button -> PRIORITY.LOW
-								R.id.priority_medium_button -> PRIORITY.MEDIUM
 								R.id.priority_high_button -> PRIORITY.HIGH
-								else -> PRIORITY.MEDIUM //TODO убрать это
+								else -> PRIORITY.MEDIUM
 							}
 						)
 					)
 				}
 			}
 
-			onBackPressed() //TODO поменять на нормальный способ возврата к предыдущей activity
+			finish()
 		}
 	}
 }

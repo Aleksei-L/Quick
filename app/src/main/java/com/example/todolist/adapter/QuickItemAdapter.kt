@@ -9,7 +9,7 @@ import com.example.todolist.data.Quick
 import com.example.todolist.holder.QuickItemViewHolder
 
 
-class QuickItemAdapter(private val data: List<Quick>, private val listener: OnItemClickListener) :
+class QuickItemAdapter(private val data: List<Quick>?, private val listener: OnItemClickListener) :
 	RecyclerView.Adapter<QuickItemViewHolder>() {
 	interface OnItemClickListener {
 		fun onItemClick(item: Quick, position: Int)
@@ -22,19 +22,19 @@ class QuickItemAdapter(private val data: List<Quick>, private val listener: OnIt
 	}
 
 	override fun onBindViewHolder(holder: QuickItemViewHolder, position: Int) {
-		holder.title.text = data[position].title
-		holder.description.text = data[position].description
-		if (data[position].priority == PRIORITY.LOW) {
+		holder.title.text = data?.get(position)?.title ?: ""
+		holder.description.text = data?.get(position)?.description ?: ""
+		if (data != null && data[position].priority == PRIORITY.LOW) {
 			holder.priority.setImageResource(R.drawable.ic_priority_low)
 			val color = holder.itemView.context.resources.getColor(R.color.grey, null)
 			holder.title.setTextColor(color)
 			holder.description.setTextColor(color)
-		} else if (data[position].priority == PRIORITY.HIGH)
+		} else if (data != null && data[position].priority == PRIORITY.HIGH)
 			holder.priority.setImageResource(R.drawable.ic_priority_high)
 		holder.itemView.setOnClickListener {
-			listener.onItemClick(data[position], position)
+			listener.onItemClick(data?.get(position) ?: Quick(0, "", "", PRIORITY.MEDIUM), position)
 		}
 	}
 
-	override fun getItemCount(): Int = data.size
+	override fun getItemCount(): Int = data?.size ?: 0
 }

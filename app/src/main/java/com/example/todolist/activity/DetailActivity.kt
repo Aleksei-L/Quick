@@ -8,20 +8,30 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.todolist.MyApp
 import com.example.todolist.R
+import com.example.todolist.viewmodel.DetailViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {
+	private lateinit var vm: DetailViewModel
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_detail)
 
+		vm = ViewModelProvider(this)[DetailViewModel::class.java]
+
 		val toolbar = findViewById<Toolbar>(R.id.toolbar)
 		setSupportActionBar(toolbar)
 		supportActionBar?.setDisplayHomeAsUpEnabled(true)
+		toolbar.setNavigationOnClickListener {
+			onBackPressedDispatcher.onBackPressed()
+		}
 
 		val title = intent.getStringExtra(MainActivity.TITLE_EXTRA)
 		val desc = intent.getStringExtra(MainActivity.DESC_EXTRA)
@@ -67,26 +77,8 @@ class DetailActivity : AppCompatActivity() {
 			}
 
 			R.id.delete_quick -> {
-				val toast = Toast.makeText(
-					this,
-					"Ошибка: не удалось удалить заметку!",
-					Toast.LENGTH_LONG
-				)
-				CoroutineScope(Dispatchers.IO).launch {
-					val app = application as MyApp
-					val dao = app.globalDao
-					val quickForDelete = dao.getQuickById(
-						intent.getLongExtra(
-							MainActivity.ID_EXTRA,
-							-1
-						)
-					)
-					if (quickForDelete != null)
-						dao.deleteQuick(quickForDelete)
-					else
-						toast.show()
-				}
-				onBackPressed() //TODO поменять на нормальный способ возврата к предыдущий activity
+				vm.deleteQuick(intent.getLongExtra(MainActivity.ID_EXTRA, -1L))
+				finish()
 				true
 			}
 
