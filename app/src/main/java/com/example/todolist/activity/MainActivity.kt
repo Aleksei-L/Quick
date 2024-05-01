@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,9 +43,6 @@ class MainActivity : AppCompatActivity() {
 			override fun onItemClick(item: Quick, position: Int) {
 				val myIntent = Intent(this@MainActivity, DetailActivity::class.java)
 				myIntent.putExtra(ID_EXTRA, item.id)
-				myIntent.putExtra(TITLE_EXTRA, item.title)
-				myIntent.putExtra(DESC_EXTRA, item.description)
-				myIntent.putExtra(PRIORITY_EXTRA, item.priority.name)
 				startActivity(myIntent)
 			}
 		}
@@ -84,8 +80,5 @@ class MainActivity : AppCompatActivity() {
 
 	companion object {
 		const val ID_EXTRA = "id"
-		const val TITLE_EXTRA = "title"
-		const val DESC_EXTRA = "desc"
-		const val PRIORITY_EXTRA = "priority"
 	}
 }

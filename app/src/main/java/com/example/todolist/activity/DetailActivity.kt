@@ -5,17 +5,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.todolist.MyApp
 import com.example.todolist.R
 import com.example.todolist.viewmodel.DetailViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class DetailActivity : AppCompatActivity() {
 	private lateinit var vm: DetailViewModel
@@ -33,17 +27,17 @@ class DetailActivity : AppCompatActivity() {
 			onBackPressedDispatcher.onBackPressed()
 		}
 
-		val title = intent.getStringExtra(MainActivity.TITLE_EXTRA)
-		val desc = intent.getStringExtra(MainActivity.DESC_EXTRA)
-		val priority = intent.getStringExtra(MainActivity.PRIORITY_EXTRA)
+		vm.getQuickById(intent.getLongExtra(MainActivity.ID_EXTRA, -1))
 
 		val titleView = findViewById<TextView>(R.id.info_title)
 		val descView = findViewById<TextView>(R.id.info_description)
 		val priorityView = findViewById<TextView>(R.id.info_priority)
 
-		titleView.text = title
-		descView.text = desc
-		priorityView.text = "$priority"
+		vm.data.observe(this) {
+			titleView.text = vm.data.value?.title
+			descView.text = vm.data.value?.description
+			priorityView.text = vm.data.value?.priority.toString()
+		}
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -60,18 +54,6 @@ class DetailActivity : AppCompatActivity() {
 					MainActivity.ID_EXTRA,
 					intent.getLongExtra(MainActivity.ID_EXTRA, 0)
 				) //TODO убрать этот 0
-				myIntent.putExtra(
-					MainActivity.TITLE_EXTRA,
-					intent.getStringExtra(MainActivity.TITLE_EXTRA)
-				)
-				myIntent.putExtra(
-					MainActivity.DESC_EXTRA,
-					intent.getStringExtra(MainActivity.DESC_EXTRA)
-				)
-				myIntent.putExtra(
-					MainActivity.PRIORITY_EXTRA,
-					intent.getStringExtra(MainActivity.PRIORITY_EXTRA)
-				)
 				startActivity(myIntent)
 				true
 			}

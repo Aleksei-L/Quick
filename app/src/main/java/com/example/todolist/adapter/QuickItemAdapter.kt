@@ -8,7 +8,6 @@ import com.example.todolist.data.PRIORITY
 import com.example.todolist.data.Quick
 import com.example.todolist.holder.QuickItemViewHolder
 
-
 class QuickItemAdapter(private val data: List<Quick>?, private val listener: OnItemClickListener) :
 	RecyclerView.Adapter<QuickItemViewHolder>() {
 	interface OnItemClickListener {
