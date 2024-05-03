@@ -1,22 +1,24 @@
 package com.example.todolist.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.todolist.MyApp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.todolist.data.Quick
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.todolist.repo.QuickRepo
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val application: Application) : AndroidViewModel(application) {
-	private val mutableData = MutableLiveData<List<Quick>>()
-	val data: LiveData<List<Quick>> = mutableData
+class MainViewModel(private val quickRepo: QuickRepo) : ViewModel() {
+	private val privateData = MutableLiveData<List<Quick>>()
+	val data: LiveData<List<Quick>> = privateData
 
-	fun refresh() = CoroutineScope(Dispatchers.IO).launch {
-		val app = application.applicationContext as MyApp
-		val dao = app.globalDao
-		mutableData.postValue(dao.getAllQuick())
+	fun refresh() = viewModelScope.launch {
+		privateData.postValue(quickRepo.getAllQuick())
+	}
+
+	override fun onCleared() {
+		super.onCleared()
+		viewModelScope.cancel()
 	}
 }

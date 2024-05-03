@@ -8,13 +8,7 @@ import com.example.todolist.repo.QuickRepo
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class DetailViewModel(private val quickRepo: QuickRepo) : ViewModel() {
-	// TODO тост вернётся чуть позже!
-	/*private val toast = Toast.makeText(
-		application.applicationContext,
-		"Ошибка: не удалось удалить заметку!",
-		Toast.LENGTH_LONG
-	)*/
+class CreateQuickViewModel(private val quickRepo: QuickRepo) : ViewModel() {
 	private val privateData = MutableLiveData<Quick?>()
 	val data = privateData
 
@@ -27,17 +21,12 @@ class DetailViewModel(private val quickRepo: QuickRepo) : ViewModel() {
 			toast.show()*/
 	}
 
-	fun deleteQuick(quickId: Long) = viewModelScope.launch {
-		if (quickId != -1L) {
-			val quickForDelete = quickRepo.getQuickById(quickId)
-			if (quickForDelete != null)
-				quickRepo.deleteQuick(quickForDelete)
-		} /*else
-			toast.show()*/
+	fun insertQuick(quick: Quick) = viewModelScope.launch {
+		quickRepo.insertQuick(quick)
 	}
 
-	fun refresh(id: Long) = viewModelScope.launch {
-		privateData.postValue(quickRepo.getQuickById(id))
+	fun updateQuick(quick: Quick) = viewModelScope.launch {
+		quickRepo.updateQuick(quick)
 	}
 
 	override fun onCleared() {

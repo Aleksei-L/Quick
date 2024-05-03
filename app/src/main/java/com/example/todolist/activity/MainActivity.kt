@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.todolist.MyApp
 import com.example.todolist.R
 import com.example.todolist.adapter.QuickItemAdapter
 import com.example.todolist.data.Quick
 import com.example.todolist.viewmodel.MainViewModel
+import com.example.todolist.viewmodel.MainViewModelFactory
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +25,12 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
-		vm = ViewModelProvider(this)[MainViewModel::class.java]
+		val app = application as MyApp
+
+		vm = ViewModelProvider(
+			this,
+			MainViewModelFactory(app.globalQuickRepo)
+		)[MainViewModel::class.java]
 
 		val refreshLayout = findViewById<SwipeRefreshLayout>(R.id.refresh_layout)
 		refreshLayout.setOnRefreshListener {

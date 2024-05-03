@@ -4,12 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
+import com.example.todolist.MyApp
 import com.example.todolist.R
+import com.example.todolist.data.PRIORITY
 import com.example.todolist.viewmodel.DetailViewModel
+import com.example.todolist.viewmodel.DetailViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
 	private lateinit var vm: DetailViewModel
@@ -18,7 +22,12 @@ class DetailActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_detail)
 
-		vm = ViewModelProvider(this)[DetailViewModel::class.java]
+		val app = application as MyApp
+
+		vm = ViewModelProvider(
+			this,
+			DetailViewModelFactory(app.globalQuickRepo)
+		)[DetailViewModel::class.java]
 
 		val toolbar = findViewById<Toolbar>(R.id.toolbar)
 		setSupportActionBar(toolbar)
@@ -31,13 +40,26 @@ class DetailActivity : AppCompatActivity() {
 
 		val titleView = findViewById<TextView>(R.id.info_title)
 		val descView = findViewById<TextView>(R.id.info_description)
-		val priorityView = findViewById<TextView>(R.id.info_priority)
+		val priorityView = findViewById<ImageView>(R.id.info_priority)
 
 		vm.data.observe(this) {
 			titleView.text = vm.data.value?.title
 			descView.text = vm.data.value?.description
-			priorityView.text = vm.data.value?.priority.toString()
+			priorityView.setImageResource(
+				when (vm.data.value?.priority) {
+					PRIORITY.LOW -> R.drawable.ic_priority_low
+					PRIORITY.HIGH -> R.drawable.ic_priority_high
+					else -> 0 // TODO посмотреть в доках можно ли передавать 0
+				}
+			)
 		}
+	}
+
+	override fun onResume() {
+		super.onResume()
+		val id = intent.getLongExtra(MainActivity.ID_EXTRA, -1)
+		if (id != -1L)
+			vm.refresh(id)
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?): Boolean {

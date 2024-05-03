@@ -22,6 +22,17 @@
 		app:layout_constraintTop_toBottomOf="@id/toolbar"
 		tools:text="Title example" />
 
+	<ImageView
+		android:id="@+id/info_priority"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="10dp"
+		android:importantForAccessibility="no"
+		app:layout_constraintBottom_toBottomOf="@id/info_title"
+		app:layout_constraintStart_toEndOf="@id/info_title"
+		app:layout_constraintTop_toTopOf="@id/info_title"
+		tools:src="@drawable/ic_priority_high" />
+
 	<TextView
 		android:id="@+id/info_description"
 		android:layout_width="wrap_content"
@@ -32,15 +43,5 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@id/info_title"
 		tools:text="Description example" />
-
-	<TextView
-		android:id="@+id/info_priority"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginStart="20dp"
-		android:layout_marginTop="24dp"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/info_description"
-		tools:text="LOW" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
